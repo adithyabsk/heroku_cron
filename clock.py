@@ -1,13 +1,19 @@
+"""Cron job for tweeting"""
+
 from apscheduler.schedulers.blocking import BlockingScheduler
 
-sched = BlockingScheduler()
+scheduler = BlockingScheduler()
+scheduler.add_job(lambda: print("This job is run every minute"), "cron", minute=1)
 
-@sched.scheduled_job('interval', minutes=3)
+
+@sched.scheduled_job('interval', seconds=30)
 def timed_job():
-    print('This job is run every three minutes.')
+    print('This job is run every 30 seconds.')
 
-@sched.scheduled_job('cron', day_of_week='mon-fri', hour=17)
-def scheduled_job():
-    print('This job is run every weekday at 5pm.')
 
-sched.start()
+@sched.scheduled_job('cron', minute=2)
+def timed_job():
+    print('This job is run every 2 minutes.')
+
+
+scheduler.start()
